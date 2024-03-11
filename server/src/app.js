@@ -17,6 +17,12 @@ app.use(cookieParser());
 app.use(express.json());
 
 
+import userRouter from "./routers/user.router.js";
+
+app.use("/api/v1/users", userRouter);
+
+
+
 //error handler
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
