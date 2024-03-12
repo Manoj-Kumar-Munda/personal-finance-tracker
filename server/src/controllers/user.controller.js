@@ -233,10 +233,30 @@ const changeCurrentPassword = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
+const changeEmail = asyncHandler(async (req, res, next) => {
+  const { newEmail } = req.body;
+
+  const isExistingUser = await User.findOne({ email: newEmail})
+
+  if(isExistingUser){
+    throw new ApiError( 400, "Email already registered");
+  }
+
+  const user = await User.findById(req.user._id);
+  user.email = newEmail;
+
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { newEmail }, "Email changed successfully"));
+});
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   generateNewTokens,
   changeCurrentPassword,
+  changeEmail,
 };
