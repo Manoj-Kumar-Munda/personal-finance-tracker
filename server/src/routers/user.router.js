@@ -22,7 +22,7 @@ userRouter.route("/refresh").post(generateNewTokens);
 userRouter.route("/logout").post(verifyJWT, logoutUser);
 userRouter.route("/change-password").post(verifyJWT, changeCurrentPassword);
 userRouter.route("/email").patch(verifyJWT, changeEmail);
-userRouter.route("/avatar").post( upload.single("avatar"), verifyJWT, changeAvatar)
+userRouter.route("/avatar").patch( upload.single("avatar"), verifyJWT, changeAvatar)
 
 
 export default userRouter;

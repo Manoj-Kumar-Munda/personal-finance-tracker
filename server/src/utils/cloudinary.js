@@ -30,5 +30,17 @@ const uploadOnCloudinary = async (localFilePath) => {
     return null;
   }
 };
+const deleteFromCloudinary = async ( fileId ) => {
+ try {
+   const res = await cloudinary.uploader.destroy(fileId)
+   console.log(res);
+ } catch (error) {
+  console.log("failed to remove oldAvatar ",error)
+  
+ }
 
-export { uploadOnCloudinary };
+
+
+}
+
+export { uploadOnCloudinary, deleteFromCloudinary };

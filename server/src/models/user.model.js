@@ -29,6 +29,9 @@ const userSchema = mongoose.Schema(
     avatar: {
       type: String, //cloudinary url
     },
+    avatarId: {
+      type: String
+    },
     refreshToken: {
       type: String,
     },

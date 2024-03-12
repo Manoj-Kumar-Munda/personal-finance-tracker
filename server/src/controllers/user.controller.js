@@ -3,7 +3,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -67,6 +67,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     fullName: fullName || "",
     username: username.toLowerCase(),
     avatar: avatar.url,
+    avatarId: avatar.public_id,
     email,
     password,
   });
@@ -258,23 +259,26 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Avatar file is missing");
   }
 
+  const user = await User.findById( req.user._id)
   /*
     delete old avatar from cloudinary
     - fetch preivous avatar url and extract publicId from that.
     - use it to remove from cloudinary
   */
-
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
   if (!avatar) {
     return 400, "failed to upload image file";
   }
 
+  await deleteFromCloudinary(user?.avatarId);
+
   await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
         avatar: avatar.url,
+        avatarId: avatar.public_id,
       },
     },
     {
@@ -284,7 +288,7 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, {}, "Avatar updated successfully"));
+    .json(new ApiResponse(200, { avatar: avatar.url, avatarId: avatar.public_id}, "Avatar updated successfully"));
 });
 
 export {
