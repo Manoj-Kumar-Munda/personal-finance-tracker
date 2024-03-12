@@ -210,4 +210,33 @@ const generateNewTokens = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { registerUser, loginUser, logoutUser, generateNewTokens };
+const changeCurrentPassword = asyncHandler(async (req, res, next) => {
+  const { oldPassword, newPassword, confPassword } = req.body;
+
+  if (newPassword !== confPassword) {
+    throw new ApiError(400, "Password didn't match");
+  }
+  const user = await User.findById(req.user._id);
+
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid old password ");
+  }
+
+  user.password = newPassword;
+
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  generateNewTokens,
+  changeCurrentPassword,
+};
