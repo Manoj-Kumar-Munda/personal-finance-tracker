@@ -236,10 +236,10 @@ const changeCurrentPassword = asyncHandler(async (req, res, next) => {
 const changeEmail = asyncHandler(async (req, res, next) => {
   const { newEmail } = req.body;
 
-  const isExistingUser = await User.findOne({ email: newEmail})
+  const isExistingUser = await User.findOne({ email: newEmail });
 
-  if(isExistingUser){
-    throw new ApiError( 400, "Email already registered");
+  if (isExistingUser) {
+    throw new ApiError(400, "Email already registered");
   }
 
   const user = await User.findById(req.user._id);
@@ -251,6 +251,41 @@ const changeEmail = asyncHandler(async (req, res, next) => {
     .status(200)
     .json(new ApiResponse(200, { newEmail }, "Email changed successfully"));
 });
+const changeAvatar = asyncHandler(async (req, res, next) => {
+  const avatarLocalPath = req?.file.path;
+
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar file is missing");
+  }
+
+  /*
+    delete old avatar from cloudinary
+    - fetch preivous avatar url and extract publicId from that.
+    - use it to remove from cloudinary
+  */
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+  if (!avatar) {
+    return 400, "failed to upload image file";
+  }
+
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        avatar: avatar.url,
+      },
+    },
+    {
+      new: true,
+    }
+  ).select("-password -refreshToken");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Avatar updated successfully"));
+});
 
 export {
   registerUser,
@@ -259,4 +294,5 @@ export {
   generateNewTokens,
   changeCurrentPassword,
   changeEmail,
+  changeAvatar,
 };
