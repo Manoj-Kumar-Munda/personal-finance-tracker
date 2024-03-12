@@ -109,24 +109,54 @@ const loginUser = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "Invalid password");
   }
 
-  const { accessToken, refreshToken} = await generateAccessAndRefreshToken(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
 
-  const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     sameSite: "strict",
-    maxAge: 24*60*60*1000, //1day
+    maxAge: 24 * 60 * 60 * 1000, //1day
   });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     sameSite: "strict",
-    maxAge: 30*24*60*60*1000
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
-  return res.status(200).json(
-    new ApiResponse( 200, loggedInUser, "User logged in successfully")
-  )
+  return res
+    .status(200)
+    .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
 });
 
-export { registerUser, loginUser };
+const logoutUser = asyncHandler(async (req, res, next) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $unset: { refreshToken: 1 },
+    },
+    {
+      new: true,
+    }
+  );
+
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    sameSite: "strict",
+  });
+
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    sameSite: "strict",
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "User successfully logged out"));
+});
+
+export { registerUser, loginUser, logoutUser };
