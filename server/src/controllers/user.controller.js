@@ -3,7 +3,11 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
-import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  deleteFromCloudinary,
+  uploadOnCloudinary,
+} from "../utils/cloudinary.js";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -257,7 +261,7 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Avatar file is missing");
   }
 
-  const user = await User.findById( req.user._id)
+  const user = await User.findById(req.user._id);
   /*
     delete old avatar from cloudinary
     - fetch preivous avatar url and extract publicId from that.
@@ -286,8 +290,87 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { avatar: avatar.url, avatarId: avatar.public_id}, "Avatar updated successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { avatar: avatar.url, avatarId: avatar.public_id },
+        "Avatar updated successfully"
+      )
+    );
 });
+
+const getCurrentUser = asyncHandler(async (req, res, next) => {
+  console.log("User: ", req.user);
+
+  return res.status(200).json(new ApiResponse(200, { user: req.user }, ""));
+});
+
+const getAllBudgets = asyncHandler(async (req, res, next) => {
+  const data = await User.aggregate([
+    {
+      $match: { _id:new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
+    },
+    {
+      $lookup: {
+        from: "budgets", // Assuming your budget model is named 'budgets'
+        localField: "createdBudgets",
+        foreignField: "_id",
+        as: "budgets",
+      },
+    },
+    {
+      $unwind: "$budgets", // Unwind the budgets array
+    },
+    {
+      $project: {
+        category: "$budgets.category",
+        budgetAmount: "$budgets.budgetAmount",
+        spentAmount: "$budgets.spentAmount",
+        remainingAmount: "$budgets.remainingAmount"
+        // Include other fields you want from the budgets model
+      },
+    },
+  ]);
+  console.log("data ", data)
+
+
+  return res.status(200).json(new ApiResponse(200, { data }, "budgets"))
+
+  
+});
+
+const getRecentExpenses = asyncHandler( async(req,res, next) => {
+
+  const data = await User.aggregate([
+    {
+      $match: { _id:new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
+    },
+    {
+      $lookup: {
+        from: "expenses", // Assuming your budget model is named 'budgets'
+        localField: "recentExpenses",
+        foreignField: "_id",
+        as: "expenses",
+      },
+    },
+    {
+      $unwind: "$expenses", // Unwind the budgets array
+    },
+    {
+      $project: {
+        category: "$expenses.category",
+        paidAmount: "$expenses.paidAmount",
+        date: "$expenses.date"
+        
+        // Include other fields you want from the budgets model
+      },
+    },
+  ]);
+  console.log("data ", data)
+
+  return res.status(200).json( new ApiResponse(200, data, ""));
+
+})
 
 export {
   registerUser,
@@ -297,4 +380,7 @@ export {
   changeCurrentPassword,
   changeEmail,
   changeAvatar,
+  getAllBudgets,
+  getCurrentUser,
+  getRecentExpenses
 };

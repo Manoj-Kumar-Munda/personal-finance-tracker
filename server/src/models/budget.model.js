@@ -17,11 +17,7 @@ const budgetSchema = Schema(
     remainingAmount: {
       type: Number,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    
   },
   {
     timestamps: true,

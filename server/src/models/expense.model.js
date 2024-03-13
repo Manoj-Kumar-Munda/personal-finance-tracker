@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const transactionSchema = Schema(
+const expensesSchema = Schema(
   {
     category: {
       type: String,
@@ -14,11 +14,7 @@ const transactionSchema = Schema(
     description: {
       type: String,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+   
     date: {
         type: Date,
         required: true
@@ -29,4 +25,4 @@ const transactionSchema = Schema(
   }
 );
 
-export const Transaction = mongoose.model("Transaction", transactionSchema);
+export const Expense = mongoose.model("expense", expensesSchema);

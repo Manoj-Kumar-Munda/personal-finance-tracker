@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema(
     avatarId: {
       type: String,
     },
-    lastSpendings: [
+    recentExpenses: [
       {
         type: Schema.Types.ObjectId,
         ref: "Transaction",

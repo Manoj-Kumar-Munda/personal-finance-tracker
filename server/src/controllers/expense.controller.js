@@ -1,14 +1,13 @@
 import { categories } from "../constants.js";
-import { Transaction } from "../models/transaction.model.js";
+import { Expense } from "../models/expense.model.js";
+import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
-const addTransaction = asyncHandler(async (req, res, next) => {
+const addExpenses = asyncHandler(async (req, res, next) => {
   const { category, paidAmount, description } = req.body;
-  console.log("user", req.user._id);
- console.log( " body ", req.body)
-  console.log("category ", category)
+
 
   if (!category) {
     throw new ApiError(400, "Select a category");
@@ -23,7 +22,7 @@ const addTransaction = asyncHandler(async (req, res, next) => {
 
  
 
-  const transaction = await Transaction.create({
+  const result = await Expense.create({
     category,
     paidAmount,
     description,
@@ -31,14 +30,21 @@ const addTransaction = asyncHandler(async (req, res, next) => {
     user: req.user._id,
   });
 
-  if (!transaction) {
-    console.log("Failed to add transactions");
+  if (!result) {
+    console.log("Failed to add expenses");
   }
-  console.log("Data successfully added ", transaction);
+  console.log("Data successfully added ", result);
+
+  const user = await User.findById(req.user._id);
+  user.recentExpenses.push(result);
+
+  await user.save({ validateBeforeSave: false });
+
+  console.log(" expenses added to user collection");
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { transaction }, "Data updated successfully"));
+    .json(new ApiResponse(200, { expenses: result }, "Data updated successfully"));
 });
 
-export { addTransaction };
+export { addExpenses };

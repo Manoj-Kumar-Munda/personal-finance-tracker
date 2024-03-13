@@ -20,15 +20,16 @@ import userRouter from "./routers/user.router.js";
 
 app.use("/api/v1/users", userRouter);
 
-import TransRouter from "./routers/transaction.router.js";
+import ExpenseRouter from "./routers/expense.router.js";
 
-app.use("/api/v1/transaction", TransRouter);
+app.use("/api/v1/expense", ExpenseRouter);
 
 import budgetRouter from "./routers/budget.router.js";
 app.use("/api/v1/budget", budgetRouter);
 
 //error handler
 app.use((err, req, res, next) => {
+  console.log("error ", err);
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
   return res.status(statusCode).json({
