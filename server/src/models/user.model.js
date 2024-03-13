@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -30,8 +30,20 @@ const userSchema = mongoose.Schema(
       type: String, //cloudinary url
     },
     avatarId: {
-      type: String
+      type: String,
     },
+    lastSpendings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Transaction",
+      },
+    ],
+    createdBudgets: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Budget",
+      },
+    ],
     refreshToken: {
       type: String,
     },

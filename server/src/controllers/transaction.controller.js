@@ -5,24 +5,26 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 const addTransaction = asyncHandler(async (req, res, next) => {
-  const { itemCategory, paidAmount, description } = req.body;
+  const { category, paidAmount, description } = req.body;
   console.log("user", req.user._id);
  console.log( " body ", req.body)
-  console.log("category ", itemCategory)
+  console.log("category ", category)
 
-  if (!itemCategory) {
+  if (!category) {
     throw new ApiError(400, "Select a category");
   }
 
-  if (!categories.includes(itemCategory)) {
+  if (!categories.includes(category)) {
     throw new ApiError(400, "Invalid category");
   }
   if (!paidAmount) {
     throw new ApiError(400, "Enter amount");
   }
 
+ 
+
   const transaction = await Transaction.create({
-    itemCategory : itemCategory,
+    category,
     paidAmount,
     description,
     date: Date.now(),

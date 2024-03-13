@@ -16,7 +16,6 @@ const budgetSchema = Schema(
     },
     remainingAmount: {
       type: Number,
-      default: 0,
     },
     user: {
       type: Schema.Types.ObjectId,

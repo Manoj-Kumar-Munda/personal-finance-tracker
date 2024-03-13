@@ -24,6 +24,9 @@ import TransRouter from "./routers/transaction.router.js";
 
 app.use("/api/v1/transaction", TransRouter);
 
+import budgetRouter from "./routers/budget.router.js";
+app.use("/api/v1/budget", budgetRouter);
+
 //error handler
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

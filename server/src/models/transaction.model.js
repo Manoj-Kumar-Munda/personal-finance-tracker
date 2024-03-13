@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const transactionSchema = Schema(
   {
-    itemCategory: {
+    category: {
       type: String,
       required: true,
     },
