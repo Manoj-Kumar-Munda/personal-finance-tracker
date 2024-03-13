@@ -308,7 +308,7 @@ const getCurrentUser = asyncHandler(async (req, res, next) => {
 const getAllBudgets = asyncHandler(async (req, res, next) => {
   const data = await User.aggregate([
     {
-      $match: { _id:new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
+      $match: { _id: new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
     },
     {
       $lookup: {
@@ -326,51 +326,46 @@ const getAllBudgets = asyncHandler(async (req, res, next) => {
         category: "$budgets.category",
         budgetAmount: "$budgets.budgetAmount",
         spentAmount: "$budgets.spentAmount",
-        remainingAmount: "$budgets.remainingAmount"
+        remainingAmount: "$budgets.remainingAmount",
         // Include other fields you want from the budgets model
       },
     },
   ]);
-  console.log("data ", data)
+  console.log("data ", data);
 
-
-  return res.status(200).json(new ApiResponse(200, { data }, "budgets"))
-
-  
+  return res.status(200).json(new ApiResponse(200, { data }, "budgets"));
 });
 
-const getRecentExpenses = asyncHandler( async(req,res, next) => {
-
+const getRecentExpenses = asyncHandler(async (req, res, next) => {
   const data = await User.aggregate([
     {
-      $match: { _id:new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
+      $match: { _id: new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
     },
     {
       $lookup: {
-        from: "expenses", // Assuming your budget model is named 'budgets'
+        from: "expenses", 
         localField: "recentExpenses",
         foreignField: "_id",
         as: "expenses",
       },
     },
     {
-      $unwind: "$expenses", // Unwind the budgets array
+      $unwind: "$expenses", 
     },
     {
       $project: {
         category: "$expenses.category",
         paidAmount: "$expenses.paidAmount",
-        date: "$expenses.date"
-        
-        // Include other fields you want from the budgets model
+        date: "$expenses.date",
+
+      
       },
     },
   ]);
-  console.log("data ", data)
+  console.log("data ", data);
 
-  return res.status(200).json( new ApiResponse(200, data, ""));
-
-})
+  return res.status(200).json(new ApiResponse(200, data, ""));
+});
 
 export {
   registerUser,
@@ -382,5 +377,5 @@ export {
   changeAvatar,
   getAllBudgets,
   getCurrentUser,
-  getRecentExpenses
+  getRecentExpenses,
 };
