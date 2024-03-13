@@ -16,12 +16,13 @@ app.use(express.static("public"));
 app.use(cookieParser());
 app.use(express.json());
 
-
 import userRouter from "./routers/user.router.js";
 
 app.use("/api/v1/users", userRouter);
 
+import TransRouter from "./routers/transaction.router.js";
 
+app.use("/api/v1/transaction", TransRouter);
 
 //error handler
 app.use((err, req, res, next) => {
