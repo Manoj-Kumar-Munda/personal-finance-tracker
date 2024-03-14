@@ -357,8 +357,6 @@ const getRecentExpenses = asyncHandler(async (req, res, next) => {
         category: "$expenses.category",
         paidAmount: "$expenses.paidAmount",
         date: "$expenses.date",
-
-      
       },
     },
   ]);

@@ -17,7 +17,10 @@ const budgetSchema = Schema(
     remainingAmount: {
       type: Number,
     },
-    
+    date: {
+      type: Date,
+      require: true
+    }
   },
   {
     timestamps: true,

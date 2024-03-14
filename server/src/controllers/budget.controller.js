@@ -6,27 +6,41 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 const addBudget = asyncHandler(async (req, res, next) => {
-  const { category, budgetAmount } = req.body;
-
+  const { category, budgetAmount,} = req.body;
+  const date = new Date();
+  date.setMonth(5);
   if (!category) {
     throw new ApiError(400, "Select a category");
   }
 
   if (!categories.includes(category)) {
-
     throw new ApiError(400, "Invalid category");
   }
   if (!budgetAmount) {
     throw new ApiError(400, "Enter amount");
   }
 
+  
+  const existingBudget = await Budget.findOne({
+    category,
+    date: { $gte: new Date(date.getFullYear(), date.getMonth(), 1), $lt: new Date(date.getFullYear(), date.getMonth() + 1, 1) }
+});
+
+console.log("existing budget", existingBudget);
+if(existingBudget){
+  throw new ApiError(400, "Budget already created for this category");
+}
+
+
+ 
+
   const createdBudget = await Budget.create({
     category,
     budgetAmount,
+    date: new Date(),
     remainingAmount: budgetAmount,
     user: req.user._id,
   });
-
 
   const user = await User.findById(req.user._id);
 
@@ -44,4 +58,23 @@ const addBudget = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, { createdBudget }, "budget created"));
 });
 
-export { addBudget };
+const removeBudget = asyncHandler(async (req, res, next) => {
+  
+  const { budgetId } = req.body;
+  const budget = await Budget.findById(budgetId);
+  if (!budget) {
+    throw new ApiError(404, "Budget not found");
+  }
+
+  const isDeleted = await Budget.deleteOne({ _id: budgetId });
+
+  if (!isDeleted) {
+    throw new ApiError(500, "Failed to delete budget");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "recored deleted successfully"));
+});
+
+export { addBudget, removeBudget };
