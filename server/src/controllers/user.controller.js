@@ -32,7 +32,6 @@ const generateAccessAndRefreshToken = async (userId) => {
 const registerUser = asyncHandler(async (req, res, next) => {
   const { fullName, username, email, password } = req.body;
 
-  console.log(req.body);
   if (!username) {
     throw new ApiError(403, "Username is required");
   }
@@ -126,6 +125,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     sameSite: "strict",
     maxAge: 24 * 60 * 60 * 1000, //1day
   });
+  
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     sameSite: "strict",
@@ -343,14 +343,14 @@ const getRecentExpenses = asyncHandler(async (req, res, next) => {
     },
     {
       $lookup: {
-        from: "expenses", 
+        from: "expenses",
         localField: "recentExpenses",
         foreignField: "_id",
         as: "expenses",
       },
     },
     {
-      $unwind: "$expenses", 
+      $unwind: "$expenses",
     },
     {
       $project: {

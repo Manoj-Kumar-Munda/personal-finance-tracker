@@ -1,6 +1,12 @@
 import axios from "axios";
-import { axiosConfig } from "../../utils/axios/axiosConfig";
 
-const useLogin = async ( { data }) => {
-    const response = await axiosConfig.post("/users/register", data )
-}
+const useLogin = async (data) => {
+  const response = await axios.post(
+    "/api/v1/users/login",
+    data
+  );
+
+  return response;
+};
+
+export default useLogin;
