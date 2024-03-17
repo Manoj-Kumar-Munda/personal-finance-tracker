@@ -6,7 +6,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Budgets from "./pages/Budgets";
 import ExpensesPage from "./pages/ExpensesPage";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile";
 const router = createBrowserRouter([
   {
     path: "/",

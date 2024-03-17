@@ -1,26 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Input from "../components/form/Input";
-import Button from "../components/form/Button";
+import Input from "../../components/form/Input";
+import Button from "../../components/form/Button";
+import { FaRegEdit } from "react-icons/fa";
 
 const Profile = () => {
   const { userInfo } = useSelector((store) => store.auth);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+    // I've kept this example simple by using the first image instead of multiple
+    setSelectedFile(e.target.files[0]);
+  };
 
   const [activeTab, setActiveTab] = useState("tab-1");
   console.log("User info: ", userInfo);
 
   return (
     <div className=" relative bg-gradient-to-br from-[#abdcff] to-[#0396ff]">
-      <div className="max-w-screen-lg mx-auto my-4 space-y-6 px-2">
+      <div className="max-w-screen-lg mx-auto my-4 space-y-6 px-2 ">
         <h1 className="text-3xl font-bold font-Poppins text-slate-700">
           Profile
         </h1>
-        <div className=" flex gap-4 flex-wrap bg-white/30 backdrop-blur-xl p-3 rounded-2xl divide-x-0 md:divide-x md:divide-slate-400">
+        <div className="border flex gap-4 flex-wrap bg-white/20 backdrop-blur-xl px-3 md:px-6 py-4 md:py-8 rounded-2xl divide-x-0 md:divide-x md:divide-white">
           <div className="flex flex-col items-center basis-full md:basis-3/12 min-w-fit">
-            <img src={userInfo?.avatar} className="w-32 h-32 rounded-full" />
-            <span className="font-Poppins font-semibold text-slate-700">
-              {userInfo?.fullName}
-            </span>
+
+            <img src={ preview ?  preview : userInfo?.avatar} className="w-32 h-32 rounded-full object-cover" />
+            <div>
+              <label
+                htmlFor="avatar"
+                className=" my-2 flex items-center gap-1 font-Poppins font-light text-sm bg-white/60 transition-all hover:bg-white cursor-pointer py-2 px-2 rounded-lg"
+              >
+                Change Avatar{" "}
+                <span>
+                  <FaRegEdit />
+                </span>
+              </label>
+
+              <input
+                type="file"
+                id="avatar"
+                className="hidden"
+                onChange={onSelectFile}
+              />
+            </div>
           </div>
 
           <div className="md:pl-3 space-y-4 grow">
