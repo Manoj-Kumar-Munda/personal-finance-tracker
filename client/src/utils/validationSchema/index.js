@@ -55,10 +55,25 @@ export const registerValidation = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(8, "Password must be at least 8 characters long"),
+    .min(6, "Password must be at least 6 characters long"),
   avatar: yup
     .mixed() // Handle photo validation based on your requirements
     .required("Please upload a photo")
-    .test("isPhotoUploaded", "Please upload a photo", (value) => value && value.length > 0)
+    .test(
+      "isPhotoUploaded",
+      "Please upload a photo",
+      (value) => value && value.length > 0
+    ),
 });
 
+export const changePasswordValidation = yup.object().shape({
+  currentPassword: yup.string().required("Enter current password"),
+  newPassword: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
+  confirmPassword: yup
+    .string()
+    .required("Confirm Password is required")
+    .oneOf([yup.ref("newPassword")], "Passwords must match"),
+});

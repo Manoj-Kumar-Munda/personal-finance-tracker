@@ -214,14 +214,14 @@ const generateNewTokens = asyncHandler(async (req, res, next) => {
 });
 
 const changeCurrentPassword = asyncHandler(async (req, res, next) => {
-  const { oldPassword, newPassword, confPassword } = req.body;
+  const { currentPassword, newPassword, confirmPassword } = req.body;
 
-  if (newPassword !== confPassword) {
+  if (newPassword !== confirmPassword) {
     throw new ApiError(400, "Password didn't match");
   }
   const user = await User.findById(req.user._id);
 
-  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+  const isPasswordCorrect = await user.isPasswordCorrect(currentPassword);
 
   if (!isPasswordCorrect) {
     throw new ApiError(400, "Invalid old password ");

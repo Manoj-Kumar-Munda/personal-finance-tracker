@@ -25,7 +25,6 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     setIsLoading(true);
 
     try {
@@ -36,7 +35,6 @@ const Login = () => {
       dispatch(setCredentials(res?.data.data))
       navigate("/")
     } catch (error) {
-      console.log("error: ", error);
       if (error?.response) {
         console.log(error?.response);
         setError(error?.response.data.message);

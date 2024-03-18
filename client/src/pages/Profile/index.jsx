@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Input from "../../components/form/Input";
-import Button from "../../components/form/Button";
 import { FaRegEdit } from "react-icons/fa";
+import UpdatePassword from "./UpdatePassword";
+import BasicInfo from "./BasicInfo";
 
 const Profile = () => {
   const { userInfo } = useSelector((store) => store.auth);
@@ -44,8 +44,10 @@ const Profile = () => {
         </h1>
         <div className="border flex gap-4 flex-wrap bg-white/20 backdrop-blur-xl px-3 md:px-6 py-4 md:py-8 rounded-2xl divide-x-0 md:divide-x md:divide-white">
           <div className="flex flex-col items-center basis-full md:basis-3/12 min-w-fit">
-
-            <img src={ preview ?  preview : userInfo?.avatar} className="w-32 h-32 rounded-full object-cover" />
+            <img
+              src={preview ? preview : userInfo?.avatar}
+              className="w-32 h-32 rounded-full object-cover"
+            />
             <div>
               <label
                 htmlFor="avatar"
@@ -71,7 +73,7 @@ const Profile = () => {
               Update Profile
             </h2>
 
-            <div className="flex bg-white/40 backdrop-blur-lg rounded-md overflow-hidden ">
+            <div className="flex bg-white/20 backdrop-blur-lg rounded-md overflow-hidden ">
               <button
                 className={`px-4 py-2 ${
                   activeTab === "tab-1" && "border-b-2 border-blue-600"
@@ -90,59 +92,9 @@ const Profile = () => {
               </button>
             </div>
 
-            {activeTab === "tab-1" && (
-              <div className="space-y-2">
-                <div className="flex gap-2">
-                  <Input
-                    className="w-full bg-white/70"
-                    value={userInfo?.fullName}
-                  />
-                  <Button>Change</Button>
-                </div>
+            {activeTab === "tab-1" && <BasicInfo userInfo={userInfo} />}
 
-                <div className="flex gap-2">
-                  <Input
-                    className="w-full bg-white/70"
-                    value={userInfo?.email}
-                  />
-                  <Button>Change</Button>
-                </div>
-
-                <div className="flex gap-2">
-                  <Input
-                    className="w-full bg-white/70"
-                    value={userInfo?.username}
-                  />
-                  <Button>Change</Button>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "tab-2" && (
-              <div>
-                <form className="space-y-2">
-                  <div className="flex flex-col gap-2">
-                    <Input
-                      className="w-full font-Poppins text-sm bg-white/70"
-                      placeholder="Enter current Password"
-                      label="Current Password"
-                    />
-                    <Input
-                      className="w-full font-Poppins text-sm bg-white/70"
-                      label="New Password"
-                      placeholder="Enter new password"
-                    />
-                    <Input
-                      className="w-full font-Poppins text-sm bg-white/70"
-                      label="Confirm Password"
-                      placeholder="Re-enter password"
-                    />
-                  </div>
-
-                  <Button>Change Password</Button>
-                </form>
-              </div>
-            )}
+            {activeTab === "tab-2" && <UpdatePassword />}
           </div>
         </div>
       </div>

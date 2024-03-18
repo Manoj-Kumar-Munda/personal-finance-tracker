@@ -2,3 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=ffffff&c2=5b59ce&gt=r&gd=dbr
+*/
+
+.update-form {
+  background: #ffffff;
+  background: radial-gradient(at right bottom, #ffffff, #5b59ce);
+}
