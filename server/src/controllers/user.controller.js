@@ -125,7 +125,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     sameSite: "strict",
     maxAge: 24 * 60 * 60 * 1000, //1day
   });
-  
+
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     sameSite: "strict",
@@ -245,37 +245,33 @@ const changeEmail = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Email already registered");
   }
 
-  const user = await User.findById(req.user._id);
-  user.email = newEmail;
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    $set: {
+      email: newEmail,
+    },
+  });
 
-  await user.save({ validateBeforeSave: false });
+  console.log("Updated user after email: ", user);
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { newEmail }, "Email changed successfully"));
+    .json(new ApiResponse(200, user, "Email changed successfully"));
 });
+
 const changeAvatar = asyncHandler(async (req, res, next) => {
   const avatarLocalPath = req?.file.path;
-
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is missing");
   }
-
   const user = await User.findById(req.user._id);
-  /*
-    delete old avatar from cloudinary
-    - fetch preivous avatar url and extract publicId from that.
-    - use it to remove from cloudinary
-  */
+  await deleteFromCloudinary(user?.avatarId);
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
   if (!avatar) {
     return 400, "failed to upload image file";
   }
 
-  await deleteFromCloudinary(user?.avatarId);
-
-  await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
@@ -290,13 +286,7 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { avatar: avatar.url, avatarId: avatar.public_id },
-        "Avatar updated successfully"
-      )
-    );
+    .json(new ApiResponse(200, updatedUser, "Avatar updated successfully"));
 });
 
 const getCurrentUser = asyncHandler(async (req, res, next) => {
@@ -331,9 +321,8 @@ const getAllBudgets = asyncHandler(async (req, res, next) => {
       },
     },
   ]);
-  console.log("data ", data);
 
-  return res.status(200).json(new ApiResponse(200, { data }, "budgets"));
+  return res.status(200).json(new ApiResponse(200, data, "budgets"));
 });
 
 const getRecentExpenses = asyncHandler(async (req, res, next) => {

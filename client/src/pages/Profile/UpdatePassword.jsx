@@ -5,10 +5,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { changePasswordValidation } from "../../utils/validationSchema";
 import useChangePassword from "./useChangePassword";
+import SuccessMessage from "../../components/form/SuccessMessage";
+import ErrorMessge from "../../components/form/ErrorMessge";
 
 const UpdatePassword = () => {
   const [error, setError] = useState(null);
-  const [onSuccess, setOnSucces] = useState(null);
+  const [onSuccess, setOnSucces] = useState({});
   const {
     register,
     handleSubmit,
@@ -21,12 +23,12 @@ const UpdatePassword = () => {
     try {
       const response = await useChangePassword(data);
       if (response?.status === 200) {
-        setOnSucces("Password changed successfully");
+        setOnSucces({ message: "Password changed successfully" });
       }
       setError(null);
     } catch (error) {
       setError(error?.response?.data?.message);
-      setOnSucces(null);
+      setOnSucces({});
     }
   };
   return (
@@ -88,8 +90,10 @@ const UpdatePassword = () => {
           )}
         </div>
 
-        {error && <p className="text-sm font-semibold font-Poppins">{error}</p>}
-        { onSuccess && <p className="text-sm font-semibold font-Poppins">{onSuccess}</p>}
+        {error && <ErrorMessge>{error}</ErrorMessge>}
+        {onSuccess?.message && (
+          <SuccessMessage>{onSuccess.message}</SuccessMessage>
+        )}
 
         <Button>Change Password</Button>
       </form>

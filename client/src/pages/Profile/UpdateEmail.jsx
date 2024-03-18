@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { emailValidation } from "../../utils/validationSchema";
 import useChangeEmail from "./useChangeEmail";
+import SuccessMessage from "../../components/form/SuccessMessage";
+import ErrorMessge from "../../components/form/ErrorMessge";
 
 const UpdateEmail = ({ userInfo }) => {
   const [error, setError] = useState(null);
@@ -20,10 +22,8 @@ const UpdateEmail = ({ userInfo }) => {
   const onSubmitHandler = async (data) => {
     try {
       const response = await useChangeEmail(data);
-
-      console.log("response: ", response);
-      if(response?.status === 200){
-        setIsSuccess({message: response?.data?.message})
+      if (response?.status === 200) {
+        setIsSuccess({ message: response?.data?.message });
       }
 
       setError(null);
@@ -38,16 +38,21 @@ const UpdateEmail = ({ userInfo }) => {
         <div className="flex gap-2">
           <Input
             className={`w-full bg-white/70 ${
-              errors.newEmail && "focus:ring-2 focus:ring-rose-400 ring-2 ring-rose-400"
+              errors.newEmail &&
+              "focus:ring-2 focus:ring-rose-400 ring-2 ring-rose-400"
             }`}
             defaultValue={userInfo?.email}
             {...register("newEmail")}
           />
           <Button>Change</Button>
         </div>
-        {errors.newEmail && <p>{errors.newEmail.message}</p>}
+        {errors.newEmail && (
+          <ErrorMessge>{errors.newEmail.message}</ErrorMessge>
+        )}
         {error && <p>{error}</p>}
-        {isSuccess?.message && <p>{isSuccess.message}</p>}
+        {isSuccess?.message && (
+          <SuccessMessage>{isSuccess.message}</SuccessMessage>
+        )}
       </form>
     </div>
   );
