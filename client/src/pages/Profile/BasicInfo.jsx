@@ -1,8 +1,10 @@
 import React from "react";
-import Button from "../../components/form/Button";
-import Input from "../../components/form/Input";
+import { useSelector } from "react-redux";
 
-const BasicInfo = ({ userInfo }) => {
+const BasicInfo = () => {
+  console.log("Basic info called");
+  const { userInfo } = useSelector((store) => store.auth)
+  console.log("User info ", userInfo)
   return (
     <div className="space-y-2">
       <div className="flex">

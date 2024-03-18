@@ -245,13 +245,15 @@ const changeEmail = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Email already registered");
   }
 
-  const user = await User.findByIdAndUpdate(req.user._id, {
-    $set: {
-      email: newEmail,
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        email: newEmail,
+      },
     },
-  });
-
-  console.log("Updated user after email: ", user);
+    { new: true }
+  ).select("-password -refreshToken");
 
   return res
     .status(200)

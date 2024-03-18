@@ -7,10 +7,15 @@ import { emailValidation } from "../../utils/validationSchema";
 import useChangeEmail from "./useChangeEmail";
 import SuccessMessage from "../../components/form/SuccessMessage";
 import ErrorMessge from "../../components/form/ErrorMessge";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, setCredentials } from "../../utils/slices/authSlice";
 
-const UpdateEmail = ({ userInfo }) => {
+const UpdateEmail = () => {
+  console.log("Update Email called");
   const [error, setError] = useState(null);
   const [isSuccess, setIsSuccess] = useState({});
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((store) => store.auth);
   const {
     register,
     handleSubmit,
@@ -23,7 +28,9 @@ const UpdateEmail = ({ userInfo }) => {
     try {
       const response = await useChangeEmail(data);
       if (response?.status === 200) {
+        console.log(" Response: ", response.data);
         setIsSuccess({ message: response?.data?.message });
+        dispatch(setCredentials(response?.data?.data));
       }
 
       setError(null);

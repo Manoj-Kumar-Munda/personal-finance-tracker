@@ -6,6 +6,7 @@ import BasicInfo from "./BasicInfo";
 import UpdateEmail from "./UpdateEmail";
 
 const Profile = () => {
+  console.log("Profile called..")
   const { userInfo } = useSelector((store) => store.auth);
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -35,7 +36,7 @@ const Profile = () => {
   };
 
   const [activeTab, setActiveTab] = useState("tab-1");
-  console.log("User info: ", userInfo);
+
 
   return (
     <div className=" relative bg-gradient-to-br from-[#abdcff] to-[#0396ff]">
@@ -72,7 +73,7 @@ const Profile = () => {
           <div className="md:pl-3 space-y-4 grow">
             <h2 className="text-xl font-bold font-Poppins text-slate-700">Basic info</h2>
             <div>
-              <BasicInfo userInfo={userInfo}/>
+              <BasicInfo />
             </div>
             <h2 className="text-xl font-bold font-Poppins text-slate-700 ">
               Update Profile
@@ -97,7 +98,7 @@ const Profile = () => {
               </button>
             </div>
 
-            {activeTab === "tab-1" && <UpdateEmail userInfo={userInfo} />}
+            {activeTab === "tab-1" && <UpdateEmail />}
 
             {activeTab === "tab-2" && <UpdatePassword />}
           </div>
