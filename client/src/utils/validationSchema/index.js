@@ -77,3 +77,12 @@ export const changePasswordValidation = yup.object().shape({
     .required("Confirm Password is required")
     .oneOf([yup.ref("newPassword")], "Passwords must match"),
 });
+
+export const emailValidation = yup.object().shape({
+  newEmail: yup
+    .string()
+    .required("Email is required")
+    .test("isValidEmail", "Invalid email", (value) => {
+      return emailRegex.test(value);
+    })
+});

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { FaRegEdit } from "react-icons/fa";
 import UpdatePassword from "./UpdatePassword";
 import BasicInfo from "./BasicInfo";
+import UpdateEmail from "./UpdateEmail";
 
 const Profile = () => {
   const { userInfo } = useSelector((store) => store.auth);
@@ -69,6 +70,10 @@ const Profile = () => {
           </div>
 
           <div className="md:pl-3 space-y-4 grow">
+            <h2 className="text-xl font-bold font-Poppins text-slate-700">Basic info</h2>
+            <div>
+              <BasicInfo userInfo={userInfo}/>
+            </div>
             <h2 className="text-xl font-bold font-Poppins text-slate-700 ">
               Update Profile
             </h2>
@@ -80,7 +85,7 @@ const Profile = () => {
                 }`}
                 onClick={() => setActiveTab("tab-1")}
               >
-                <span className="font-Poppins text-sm">Basic info</span>
+                <span className="font-Poppins text-sm">Update Email</span>
               </button>
               <button
                 className={`px-4 py-2 ${
@@ -92,7 +97,7 @@ const Profile = () => {
               </button>
             </div>
 
-            {activeTab === "tab-1" && <BasicInfo userInfo={userInfo} />}
+            {activeTab === "tab-1" && <UpdateEmail userInfo={userInfo} />}
 
             {activeTab === "tab-2" && <UpdatePassword />}
           </div>
