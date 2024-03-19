@@ -25,7 +25,7 @@ userRouter.route("/refresh").post(generateNewTokens);
 userRouter.route("/logout").post(verifyJWT, logoutUser);
 userRouter.route("/change-password").post(verifyJWT, changeCurrentPassword);
 userRouter.route("/email").patch(verifyJWT, changeEmail);
-userRouter.route("/avatar").patch( upload.single("avatar"), verifyJWT, changeAvatar)
+userRouter.route("/avatar").patch( upload.single("newAvatar"), verifyJWT, changeAvatar)
 userRouter.route("/budgets").get(verifyJWT, getAllBudgets);
 userRouter.route("/profile").get(verifyJWT, getCurrentUser);
 userRouter.route("/expenses").get(verifyJWT, getRecentExpenses);

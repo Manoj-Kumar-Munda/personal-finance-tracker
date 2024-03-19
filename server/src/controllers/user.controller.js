@@ -282,7 +282,7 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
       },
     },
     {
-      new: true,
+      new: true
     }
   ).select("-password -refreshToken");
 

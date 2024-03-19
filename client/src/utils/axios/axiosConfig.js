@@ -9,7 +9,7 @@ axiosConfig.interceptors.response.use(
   async (error) => {
     if (error?.response.status === 401) {
       await axios
-        .post("http://localhost:4000/api/v1/user/refresh", {
+        .post("/api/v1/users/refresh", {
           withCredentials: true,
         })
         .catch((refrehTokenAPIError) => {

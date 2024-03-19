@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RegisterPic from "../../assets/signUp.png";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,7 @@ import { useRegister } from "./useRegister";
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState(null);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,10 +23,11 @@ const Register = () => {
   const submitHandler = async (data) => {
     setIsLoading(true);
     try{
-      const response = await useRegister(data);
-      console.log("response ", response);
+      await useRegister(data);
       setErr(null);
       setIsLoading(false);
+      navigate("/login");
+      
     } catch (error) {
       setErr(error?.response?.data.message)
       setIsLoading(false);

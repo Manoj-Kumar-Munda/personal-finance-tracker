@@ -29,14 +29,13 @@ const Login = () => {
 
     try {
       const res = await useLogin(data);
-      
+
       setIsLoading(false);
       setError(null);
-      dispatch(setCredentials(res?.data.data))
-      navigate("/")
+      dispatch(setCredentials(res?.data.data));
+      navigate("/");
     } catch (error) {
       if (error?.response) {
-        console.log(error?.response);
         setError(error?.response.data.message);
       } else {
         setError(error?.message);
@@ -91,7 +90,10 @@ const Login = () => {
               {error}
             </p>
           )}
-          <Button disabled={isLoading} className="w-full rounded-xl py-2"> Login </Button>
+          <Button disabled={isLoading} className="w-full rounded-xl py-2">
+            {" "}
+            Login{" "}
+          </Button>
         </form>
 
         <div className="flex gap-2">

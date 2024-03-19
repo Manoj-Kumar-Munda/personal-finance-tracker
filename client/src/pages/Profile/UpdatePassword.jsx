@@ -4,7 +4,7 @@ import Input from "../../components/form/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { changePasswordValidation } from "../../utils/validationSchema";
-import useChangePassword from "./useChangePassword";
+import useChangePassword from "./changePassword";
 import SuccessMessage from "../../components/form/SuccessMessage";
 import ErrorMessge from "../../components/form/ErrorMessge";
 

@@ -22,12 +22,12 @@ const Header = () => {
     }
   };
   return (
-    <header className="bg-white  shadow-md">
+    <header className="absolute top-0 right-0 left-0 z-20 bg-white/10 backdrop-blur-xl">
       <nav className="px-2 lg:w-4/5 mx-auto flex justify-between items-center py-4">
         <div>
           <div className="inline-flex items-center gap-2">
-            <IoWalletOutline size={35} color="#f87171" />
-            <h2 className="text-3xl font-bold  text-blue-600 font-Poppins cursor-pointer">
+            <IoWalletOutline size={35} color="#fff" />
+            <h2 className="text-2xl font-semibold  text-blue-600 font-Poppins cursor-pointer">
               FinTrack
             </h2>
           </div>

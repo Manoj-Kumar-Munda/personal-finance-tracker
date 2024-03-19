@@ -1,6 +1,6 @@
 import { axiosConfig } from "../../utils/axios/axiosConfig";
 
-const useChangePassword = async (data) => {
+const changePassword = async (data) => {
   return await axiosConfig.post(
     "/api/v1/users/change-password",
     data,
@@ -12,4 +12,4 @@ const useChangePassword = async (data) => {
  ;
 };
 
-export default useChangePassword;
+export default changePassword;
