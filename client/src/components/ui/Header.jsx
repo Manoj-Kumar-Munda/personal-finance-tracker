@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../form/Button";
 import useLogout from "../../hooks/useLogout";
 import { logout } from "../../utils/slices/authSlice";
+import Logo from "./Logo";
+import { TfiDashboard } from "react-icons/tfi";
+
 
 const Header = () => {
   const { userInfo } = useSelector((store) => store.auth);
@@ -22,22 +25,27 @@ const Header = () => {
     }
   };
   return (
-    <header className="absolute top-0 right-0 left-0 z-20 bg-white/10 backdrop-blur-xl">
+    <header className="shadow-md">
       <nav className="px-2 lg:w-4/5 mx-auto flex justify-between items-center py-4">
-        <div>
-          <div className="inline-flex items-center gap-2">
-            <IoWalletOutline size={35} color="#fff" />
-            <h2 className="text-2xl font-semibold  text-blue-600 font-Poppins cursor-pointer">
-              FinTrack
-            </h2>
-          </div>
-        </div>
+        <Logo />
+
+        <ul className="flex gap-4 items-center">
+          <li>
+            <NavLink 
+              to={"/dashboard"}
+              className={({ isActive }) => `font-semibold text-gray-700 transition-colors ${isActive && "text-indigo-500"}`}
+            >
+              
+                Dashboard
+            
+            </NavLink>
+          </li>
+        </ul>
 
         <ul className="flex gap-4 items-center">
           {userInfo && (
             <li className="" title="Profile">
-             
-              <div className="rounded-full border border-blue-600 overflow-hidden">
+              <div className="rounded-full overflow-hidden">
                 <Link to={"/profile"}>
                   <img src={userInfo.avatar} className="w-12 h-12 " />
                 </Link>
@@ -59,8 +67,8 @@ const Header = () => {
               <NavLink
                 to={"/login"}
                 className={({ isActive }) =>
-                  `font-semibold text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-xl transition-all ${
-                    isActive && "text-white bg-blue-600 "
+                  `font-semibold bg-white  border-2 border-primary px-6 py-2 rounded-xl transition-all ${
+                    isActive && "text-white  bg-primary "
                   }`
                 }
               >

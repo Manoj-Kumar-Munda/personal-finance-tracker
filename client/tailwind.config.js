@@ -6,8 +6,13 @@ export default {
   ],
   theme: {
     extend: {
+      colors:{
+        "primary": '#6C63FF'
+
+      },
       fontFamily:{
         "Poppins": ["Poppins", "sans-serif"],
+        "Maven-Pro": ["Maven Pro", "sans-serif"]
       }
     },
   },
