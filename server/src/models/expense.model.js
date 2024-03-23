@@ -14,11 +14,15 @@ const expensesSchema = Schema(
     description: {
       type: String,
     },
-   
+
+    spentBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     date: {
-        type: Date,
-        required: true
-    }
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

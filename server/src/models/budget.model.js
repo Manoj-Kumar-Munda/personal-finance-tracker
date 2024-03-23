@@ -17,10 +17,14 @@ const budgetSchema = Schema(
     remainingAmount: {
       type: Number,
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     date: {
       type: Date,
-      require: true
-    }
+      require: true,
+    },
   },
   {
     timestamps: true,
@@ -28,4 +32,3 @@ const budgetSchema = Schema(
 );
 
 export const Budget = mongoose.model("Budget", budgetSchema);
-
