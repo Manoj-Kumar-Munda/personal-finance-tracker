@@ -5,7 +5,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 const addBudget = asyncHandler(async (req, res, next) => {
-
   const { category, budgetAmount } = req.body;
   const date = new Date();
 
@@ -51,7 +50,7 @@ const addBudget = asyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200,  createdBudget , "budget created"));
+    .json(new ApiResponse(200, createdBudget, "budget created"));
 });
 
 const removeBudget = asyncHandler(async (req, res, next) => {
@@ -67,11 +66,9 @@ const removeBudget = asyncHandler(async (req, res, next) => {
     throw new ApiError(500, "Failed to delete budget");
   }
 
-  await User.findByIdAndUpdate( budget.createdBy, {
-    $pull: { createdBudgets : budgetId}
-  } )
-
-
+  await User.findByIdAndUpdate(budget.createdBy, {
+    $pull: { createdBudgets: budgetId },
+  });
 
   return res
     .status(200)

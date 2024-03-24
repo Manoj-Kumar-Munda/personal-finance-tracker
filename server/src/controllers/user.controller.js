@@ -8,6 +8,8 @@ import {
   uploadOnCloudinary,
 } from "../utils/cloudinary.js";
 import mongoose from "mongoose";
+import { Budget } from "../models/budget.model.js";
+import { compareSync } from "bcrypt";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -304,7 +306,7 @@ const getAllBudgets = asyncHandler(async (req, res, next) => {
     },
     {
       $lookup: {
-        from: "budgets", // Assuming your budget model is named 'budgets'
+        from: "budgets", 
         localField: "createdBudgets",
         foreignField: "_id",
         as: "budgets",
@@ -356,6 +358,34 @@ const getRecentExpenses = asyncHandler(async (req, res, next) => {
   return res.status(200).json(new ApiResponse(200, data, ""));
 });
 
+const getBudgetCategories = asyncHandler( async(req, res, next) => {
+
+  const activeBudgetCategories = await Budget.aggregate([
+    {
+      $match: { createdBy : req.user._id}
+    },
+    {
+      $project: {
+        category: 1
+      }
+    }
+    
+  ])
+
+  console.log("Active budgets: ", activeBudgetCategories)
+
+
+  
+  if(!activeBudgetCategories){
+    throw new ApiError(400, activeBudgetCategories, "No budget created this month");
+  }
+
+  // return res.status(200).json(new ApiResponse(200, activeBudgetCategories, ""))
+
+})
+
+
+
 export {
   registerUser,
   loginUser,
@@ -367,4 +397,5 @@ export {
   getAllBudgets,
   getCurrentUser,
   getRecentExpenses,
+  getBudgetCategories
 };

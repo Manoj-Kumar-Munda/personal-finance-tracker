@@ -5,6 +5,7 @@ import {
   changeEmail,
   generateNewTokens,
   getAllBudgets,
+  getBudgetCategories,
   getCurrentUser,
   getRecentExpenses,
   loginUser,
@@ -29,6 +30,7 @@ userRouter.route("/avatar").patch( upload.single("newAvatar"), verifyJWT, change
 userRouter.route("/budgets").get(verifyJWT, getAllBudgets);
 userRouter.route("/profile").get(verifyJWT, getCurrentUser);
 userRouter.route("/expenses").get(verifyJWT, getRecentExpenses);
+userRouter.route("/budget-categories").get(verifyJWT, getBudgetCategories);
 
 
 export default userRouter;
