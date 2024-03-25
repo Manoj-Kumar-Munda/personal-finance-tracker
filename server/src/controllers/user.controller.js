@@ -284,7 +284,7 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
       },
     },
     {
-      new: true
+      new: true,
     }
   ).select("-password -refreshToken");
 
@@ -306,7 +306,7 @@ const getAllBudgets = asyncHandler(async (req, res, next) => {
     },
     {
       $lookup: {
-        from: "budgets", 
+        from: "budgets",
         localField: "createdBudgets",
         foreignField: "_id",
         as: "budgets",
@@ -358,33 +358,42 @@ const getRecentExpenses = asyncHandler(async (req, res, next) => {
   return res.status(200).json(new ApiResponse(200, data, ""));
 });
 
-const getBudgetCategories = asyncHandler( async(req, res, next) => {
-
-  const activeBudgetCategories = await Budget.aggregate([
+const getCurrentMonthBudgets = asyncHandler(async (req, res, next) => {
+  const date = new Date();
+  const currentBudgets = await Budget.aggregate([
     {
-      $match: { createdBy : req.user._id}
+      $match: { createdBy: req.user._id },
+    },
+    {
+      $match:{
+        date:{
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lt: new Date(date.getFullYear(), date.getMonth() + 1, 1),
+        },
+      },
     },
     {
       $project: {
-        category: 1
-      }
-    }
-    
-  ])
+        category: 1,
+        budgetAmount: 1,
+        spentAmount: 1,
+        remainingAmount: 1,
+      },
+    },
+  ]);
 
-  console.log("Active budgets: ", activeBudgetCategories)
+  console.log("Active budgets: ", currentBudgets);
 
-
-  
-  if(!activeBudgetCategories){
-    throw new ApiError(400, activeBudgetCategories, "No budget created this month");
+  if (currentBudgets.length === 0) {
+    throw new ApiError(
+      400,
+      currentBudgets,
+      "No budget created this month"
+    );
   }
 
-  // return res.status(200).json(new ApiResponse(200, activeBudgetCategories, ""))
-
-})
-
-
+  return res.status(200).json(new ApiResponse(200, currentBudgets , ""))
+});
 
 export {
   registerUser,
@@ -397,5 +406,5 @@ export {
   getAllBudgets,
   getCurrentUser,
   getRecentExpenses,
-  getBudgetCategories
+  getCurrentMonthBudgets
 };

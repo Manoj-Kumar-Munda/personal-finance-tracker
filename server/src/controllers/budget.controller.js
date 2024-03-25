@@ -75,4 +75,14 @@ const removeBudget = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "recored deleted successfully"));
 });
 
+const getCurrentMonthBudgets = asyncHandler( async( req, res, next) => {
+  const currentMonthBudgets = await Budget.aggregate([
+    {
+      $match : {
+        createdBy: req.user._id
+      }
+    }
+  ])
+})
+
 export { addBudget, removeBudget };
