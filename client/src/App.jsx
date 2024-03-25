@@ -3,7 +3,7 @@ import Layout from "./Layouts/Layout";
 import ProtectedRoutes from "./Layouts/ProtectedRoutes";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import Budgets from "./pages/Budgets";
+import Budgets from "./pages/Budgets/Budgets";
 import ExpensesPage from "./pages/ExpensesPage";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home/Home";
