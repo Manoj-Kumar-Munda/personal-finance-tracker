@@ -1,8 +1,39 @@
 import React from "react";
 import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
+import { useForm } from "react-hook-form";
+import { budgetFormValidation } from "../../utils/validationSchema";
+import ErrorMessge from "../../components/form/ErrorMessge";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { axiosConfig } from "../../utils/axios/axiosConfig";
 
 const AddBudgetForm = () => {
+  const onSubmitHandler = async (budgetData) => {
+    console.log("Data: ", budgetData);
+    try {
+      const res = await axiosConfig.post(
+        "/api/v1/budget/add-budget",
+        budgetData
+      );
+
+      console.log("response: ", res?.data?.data);
+    } catch (error) {
+      console.log("error ", error);
+      if (error?.response) {
+        setError(error?.response.data.message);
+      } else {
+        setError(error?.message);
+      }
+    }
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(budgetFormValidation),
+  });
   return (
     <>
       <h1 className="text-5xl font-Maven-Pro font-bold text-slate-800 ">
@@ -10,14 +41,32 @@ const AddBudgetForm = () => {
       </h1>
 
       <div className="max-w-screen-sm my-4 shadow-xl  rounded-2xl px-4 py-6 ">
-        <form className="">
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="flex flex-col gap-4 mb-4">
-            <Input label="Budget Name" placeholder="e.g. Food, Travel, Health, etc." />
+            <Input
+              label="Budget Category"
+              placeholder="e.g. Food, Travel, Health, etc."
+              name="category"
+              {...register("category")}
+            />
 
-            <Input label="Amount" placeholder="" type="number" />
+            <Input
+              label="Amount"
+              placeholder=""
+              type="number"
+              name="budgetAmount"
+              defaultValue={0}
+              {...register("budgetAmount")}
+            />
+
+            {errors.budgetAmount && (
+              <ErrorMessge>{errors.budgetAmount.message}</ErrorMessge>
+            )}
           </div>
 
-          <Button className="transition-colors hover:bg-primary/80">Add Budget</Button>
+          <Button className="transition-colors hover:bg-primary/80">
+            Add Budget
+          </Button>
         </form>
       </div>
     </>
