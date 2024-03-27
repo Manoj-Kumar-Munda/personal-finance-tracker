@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AddBudgetForm from "./AddBudgetForm";
 import ExistingBudgets from "./ExistingBudgets";
 import { useFetchBudgetCategories } from "../../hooks/useGetBudgets";
