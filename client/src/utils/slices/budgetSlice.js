@@ -1,22 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  currentBudgets: [],
+};
+
 const budgetSlice = createSlice({
   name: "budget",
-  initialState: {
-    currentBudgets: [],
-  },
+  initialState,
   reducers: {
     addBudgets: (state, action) => {
-      console.log("Action payload: ", action.payload);
-      if (Array.isArray(action.payload)) {
-
-        const data = action.payload;
-      } else {
-        state.currentBudgets.push(action.payload);
+      if (state.currentBudgets.length == 0) {
+        state.currentBudgets = [...action.payload];
       }
+    },
+
+    addNewBudget: (state, action) => {
+      state.currentBudgets.push(action.payload);
     },
   },
 });
 
-export const { addBudgets } = budgetSlice.actions;
+export const { addBudgets, addNewBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

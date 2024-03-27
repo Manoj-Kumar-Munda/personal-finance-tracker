@@ -6,17 +6,21 @@ import { budgetFormValidation } from "../../utils/validationSchema";
 import ErrorMessge from "../../components/form/ErrorMessge";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { axiosConfig } from "../../utils/axios/axiosConfig";
+import { useDispatch } from "react-redux";
+import { addNewBudget } from "../../utils/slices/budgetSlice";
 
 const AddBudgetForm = () => {
-  const onSubmitHandler = async (budgetData) => {
+  const dispatch = useDispatch();
+  const onSubmitHandler = async (budgetData, e) => {
     console.log("Data: ", budgetData);
     try {
       const res = await axiosConfig.post(
         "/api/v1/budget/add-budget",
         budgetData
       );
+      e.target.reset();
 
-      console.log("response: ", res?.data?.data);
+      dispatch(addNewBudget(res?.data?.data));
     } catch (error) {
       console.log("error ", error);
       if (error?.response) {
