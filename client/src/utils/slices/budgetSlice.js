@@ -17,8 +17,14 @@ const budgetSlice = createSlice({
     addNewBudget: (state, action) => {
       state.currentBudgets.push(action.payload);
     },
+
+    updateBudget: (state, action) => {
+      state.currentBudgets = state.currentBudgets.map((budget) =>
+        budget._id === action.payload._id ? { ...action.payload } : budget
+      );
+    },
   },
 });
 
-export const { addBudgets, addNewBudget } = budgetSlice.actions;
+export const { addBudgets, addNewBudget,updateBudget } = budgetSlice.actions;
 export default budgetSlice.reducer;

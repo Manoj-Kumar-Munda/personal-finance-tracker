@@ -9,7 +9,6 @@ import {
 } from "../utils/cloudinary.js";
 import mongoose from "mongoose";
 import { Budget } from "../models/budget.model.js";
-import { compareSync } from "bcrypt";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {

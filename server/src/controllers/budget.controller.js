@@ -75,6 +75,29 @@ const removeBudget = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, {}, "recored deleted successfully"));
 });
 
+const editBudget = asyncHandler(async (req, res, next) => {
+  const { _id: budgetId, newBudgetAmount,spentAmount } = req.body;
 
+  const updatedBudget = await Budget.findByIdAndUpdate(
+    budgetId,
+    {
+      $set: {
+        budgetAmount: newBudgetAmount,
+        remainingAmount: newBudgetAmount-spentAmount
+      },
+    },
+    {
+      new: true,
+    }
+  );
 
-export { addBudget, removeBudget };
+  console.log("Updated budget", updatedBudget);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedBudget, "Budget is modified successfully")
+    );
+});
+
+export { addBudget, removeBudget, editBudget };
