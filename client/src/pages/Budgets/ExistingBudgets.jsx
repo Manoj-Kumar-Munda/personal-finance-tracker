@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Button from "../../components/form/Button";
 import EditBudgets from "./EditBudgets";
 import RemoveBudget from "./RemoveBudget";
+import ModifyBudgets from "./ModifyBudgets";
 
 const ExistingBudgets = () => {
   const budgets = useSelector((store) => store.budget.currentBudgets);
@@ -16,7 +17,7 @@ const ExistingBudgets = () => {
         <span className="text-primary">Budgets</span> for this month
       </h1>
 
-      <div className="my-6 px-4">
+      <div className="my-6  sm:px-4">
         <div className="flex flex-wrap justify-center relative">
           {budgets.length === 0 ? (
             <h1>Loading...</h1>
@@ -63,7 +64,7 @@ const ExistingBudgets = () => {
         </div>
 
         <div className="">
-          {isMakeChanges && <EditBudgets budgets={budgets} />}
+          {isMakeChanges && <ModifyBudgets budgets={budgets} />}
           
         </div>
       </div>

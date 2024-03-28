@@ -8,6 +8,8 @@ import Button from "../../components/form/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosConfig } from "../../utils/axios/axiosConfig";
 import { updateBudget } from "../../utils/slices/budgetSlice";
+import SelectCategory from "../../components/form/Select";
+import Heading from "../../components/ui/Heading";
 
 const EditBudgets = () => {
   const dispatch = useDispatch();
@@ -37,7 +39,6 @@ const EditBudgets = () => {
       newBudgetAmount: data.budgetAmount,
       ...JSON.parse(data.category),
     };
-    console.log("data", budgetData);
     try {
       const res = await axiosConfig.patch("/api/v1/budget/modify", budgetData);
       dispatch(updateBudget(res.data.data));
@@ -47,32 +48,28 @@ const EditBudgets = () => {
     }
   };
   return (
-    <div>
-      <h1 className="text-5xl font-Maven-Pro font-bold text-slate-800 ">
-        Edit <span className="text-primary">Budget</span>
-      </h1>
+    <div className="flex-grow basis-auto">
+      <Heading
+        className="font-bold text-slate-800"
+        font="font-Maven-Pro"
+        textSize="text-5xl"
+      >
+        <span className="text-primary">Edit</span> Budget
+      </Heading>
 
       <div className="max-w-screen-sm my-4 shadow-xl  rounded-2xl px-4 py-6 ">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="flex flex-col gap-4 mb-4">
-            <select
-              className="border py-3 px-2 rounded-lg outline-none transition-all focus:ring-2 focus:ring-primary"
-              defaultValue={"Select Category"}
+            <SelectCategory
+              options={budgets}
+              defaultValue={"Select category"}
               {...register("category", {
                 onChange: (e) => {
                   onChangeSelectCategory(e);
                 },
               })}
-            >
-              <option value="Select Category" disabled>
-                Select category
-              </option>
-              {budgets.map((budget) => (
-                <option key={budget._id} value={JSON.stringify(budget)}>
-                  {budget.category}
-                </option>
-              ))}
-            </select>
+            />
+
             <Input
               label="Amount"
               type="number"
