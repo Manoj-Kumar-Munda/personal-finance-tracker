@@ -12,17 +12,15 @@ import { addNewBudget } from "../../utils/slices/budgetSlice";
 const AddBudgetForm = () => {
   const dispatch = useDispatch();
   const onSubmitHandler = async (budgetData, e) => {
-    console.log("Data: ", budgetData);
+
     try {
       const res = await axiosConfig.post(
         "/api/v1/budget/add-budget",
         budgetData
       );
       e.target.reset();
-
       dispatch(addNewBudget(res?.data?.data));
     } catch (error) {
-      console.log("error ", error);
       if (error?.response) {
         setError(error?.response.data.message);
       } else {

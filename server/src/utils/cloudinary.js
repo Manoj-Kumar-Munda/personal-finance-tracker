@@ -8,7 +8,6 @@ cloudinary.config({
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
-  console.log("Inside cloudinary local: ", localFilePath);
 
   try {
     if (!localFilePath) return null;
@@ -31,7 +30,6 @@ const uploadOnCloudinary = async (localFilePath) => {
 const deleteFromCloudinary = async ( fileId ) => {
  try {
    const res = await cloudinary.uploader.destroy(fileId)
-   console.log(res);
  } catch (error) {
   console.log("failed to remove oldAvatar ",error)
   

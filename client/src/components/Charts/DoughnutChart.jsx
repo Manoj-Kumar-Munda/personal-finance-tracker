@@ -16,7 +16,6 @@ const DoughnutChart = ({
     dataArr,
   });
 
-  console.log("Data: ", data);
   return (
     <div>
       <div className="">

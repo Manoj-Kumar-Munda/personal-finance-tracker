@@ -1,12 +1,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { IoWalletOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../form/Button";
 import useLogout from "../../hooks/useLogout";
 import { logout } from "../../utils/slices/authSlice";
 import Logo from "./Logo";
-import { TfiDashboard } from "react-icons/tfi";
 
 
 const Header = () => {
@@ -16,11 +14,8 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       const res = await useLogout();
-
-      console.log(" res: ", res);
       dispatch(logout());
     } catch (error) {
-      console.log("error: ", error);
       dispatch(logout());
     }
   };

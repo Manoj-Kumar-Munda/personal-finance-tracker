@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import DoughnutChart from "../../components/Charts/DoughnutChart";
 import { useSelector } from "react-redux";
 import Button from "../../components/form/Button";
-import EditBudgets from "./EditBudgets";
-import RemoveBudget from "./RemoveBudget";
 import ModifyBudgets from "./ModifyBudgets";
 
 const ExistingBudgets = () => {
   const budgets = useSelector((store) => store.budget.currentBudgets);
   const [isShowAll, setIsShowAll] = useState(false);
   const [isMakeChanges, setIsmakeChanges] = useState(false);
+  console.log("Existing budgets: ", budgets);
 
   return (
     <>
@@ -21,7 +20,7 @@ const ExistingBudgets = () => {
         <div className="flex flex-wrap justify-center relative">
           {budgets.length === 0 ? (
             <h1>Loading...</h1>
-          ) : budgets.length < 4 || isShowAll ? (
+          ) : (budgets.length < 4 || isShowAll) ? (
             budgets.map((budget) => (
               <DoughnutChart
                 key={budget._id}
@@ -43,7 +42,7 @@ const ExistingBudgets = () => {
               ))
           )}
         </div>
-        <div className=" my-2 sm:my-0 relative flex flex-col sm:flex-row justify-start sm:justify-end gap-2">
+        <div className=" my-3 sm:my-0 relative flex flex-col sm:flex-row justify-start sm:justify-end gap-2">
           {budgets.length > 3 && (
             <Button
               className="font-Poppins"

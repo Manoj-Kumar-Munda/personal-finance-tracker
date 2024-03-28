@@ -6,7 +6,7 @@ import { addBudget, removeBudget, editBudget } from "../controllers/budget.contr
 const budgetRouter = express.Router();
 
 budgetRouter.route("/add-budget").post(verifyJWT, addBudget);
-budgetRouter.route("/delete-budget").delete(verifyJWT, removeBudget)
+budgetRouter.route("/:id").delete(verifyJWT, removeBudget)
 budgetRouter.route("/modify").patch(verifyJWT, editBudget)
 
 export default budgetRouter;

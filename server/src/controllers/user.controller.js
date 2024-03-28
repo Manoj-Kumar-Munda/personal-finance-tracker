@@ -59,8 +59,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
-  console.log(avatar);
-
   if (!avatar) {
     throw new ApiError(500, "Failed to upload avatar");
   }
@@ -88,7 +86,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
 });
 
 const loginUser = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
   const { userId, password } = req.body;
 
   if (!userId) {
@@ -293,7 +290,6 @@ const changeAvatar = asyncHandler(async (req, res, next) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res, next) => {
-  console.log("User: ", req.user);
 
   return res.status(200).json(new ApiResponse(200, { user: req.user }, ""));
 });
@@ -352,8 +348,6 @@ const getRecentExpenses = asyncHandler(async (req, res, next) => {
       },
     },
   ]);
-  console.log("data ", data);
-
   return res.status(200).json(new ApiResponse(200, data, ""));
 });
 
@@ -380,8 +374,6 @@ const getCurrentMonthBudgets = asyncHandler(async (req, res, next) => {
       },
     },
   ]);
-
-  console.log("Active budgets: ", currentBudgets);
 
   if (currentBudgets.length === 0) {
     throw new ApiError(

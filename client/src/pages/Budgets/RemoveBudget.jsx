@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Heading from "../../components/ui/Heading";
 import SelectCategory from "../../components/form/Select";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProgressBar from "../../components/form/ProgressBar";
 import Button from "../../components/form/Button";
+import { axiosConfig } from "../../utils/axios/axiosConfig";
+import { removeBudget } from "../../utils/slices/budgetSlice";
 
 const RemoveBudget = () => {
+  const dispatch = useDispatch();
   const categories = useSelector((store) => store.budget.currentBudgets);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [progressPercentage, setProgressPercentage] = useState(0);
 
@@ -17,8 +22,27 @@ const RemoveBudget = () => {
     setProgressPercentage(percent);
   }, [activeCategory]);
 
+  const deleteBudgetHandler = async (e) => {
+    setIsLoading(true);
+    console.log("active: ", activeCategory);
+    e.preventDefault();
+    try {
+      const res = await axiosConfig.delete(
+        `/api/v1/budget/${activeCategory._id}`
+      );
+
+      console.log("repsonse", res.data.data)
+      dispatch(removeBudget(res.data.data))
+
+      setIsLoading(false);
+      setError(null);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="flex-grow basis-auto">
+    <div className="flex-grow basis-auto min-w-96">
       <Heading
         className="font-bold text-slate-800"
         font="font-Maven-Pro"
@@ -28,7 +52,7 @@ const RemoveBudget = () => {
       </Heading>
 
       <div className="max-w-screen-sm my-4 shadow-xl rounded-2xl px-4 py-6">
-        <form className="">
+        <form className="" onSubmit={deleteBudgetHandler}>
           <div className="flex flex-col gap-6 mb-4">
             <SelectCategory
               options={categories}
@@ -48,7 +72,10 @@ const RemoveBudget = () => {
               <ProgressBar progressPercentage={progressPercentage} />
             </div>
 
-            <Button className=" transition-all bg-red-500 hover:bg-red-400">
+            <Button
+              className=" transition-all bg-red-500 hover:bg-red-400"
+              disabled={isLoading}
+            >
               Delete
             </Button>
           </div>

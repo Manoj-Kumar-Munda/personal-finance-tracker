@@ -48,7 +48,7 @@ const EditBudgets = () => {
     }
   };
   return (
-    <div className="flex-grow basis-auto">
+    <div className="flex-grow basis-auto min-w-96">
       <Heading
         className="font-bold text-slate-800"
         font="font-Maven-Pro"

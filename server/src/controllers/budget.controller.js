@@ -24,8 +24,6 @@ const addBudget = asyncHandler(async (req, res, next) => {
     },
   });
 
-  console.log("existing budget", existingBudget);
-
   if (existingBudget) {
     throw new ApiError(400, "Budget already created for this category");
   }
@@ -54,7 +52,7 @@ const addBudget = asyncHandler(async (req, res, next) => {
 });
 
 const removeBudget = asyncHandler(async (req, res, next) => {
-  const { budgetId } = req.body;
+  const budgetId  = req.params.id;
   const budget = await Budget.findById(budgetId);
   if (!budget) {
     throw new ApiError(404, "Budget not found");
@@ -72,7 +70,7 @@ const removeBudget = asyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, {}, "recored deleted successfully"));
+    .json(new ApiResponse(200, budget, "recored deleted successfully"));
 });
 
 const editBudget = asyncHandler(async (req, res, next) => {
@@ -90,9 +88,6 @@ const editBudget = asyncHandler(async (req, res, next) => {
       new: true,
     }
   );
-
-  console.log("Updated budget", updatedBudget);
-
   return res
     .status(200)
     .json(
