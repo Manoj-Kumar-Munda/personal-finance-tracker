@@ -174,7 +174,7 @@ const generateNewTokens = asyncHandler(async (req, res, next) => {
     const user = await User.findById(decodedToken?._id);
 
     if (!user) {
-      throw new ApiError(401, "Inva;lid refresh token");
+      throw new ApiError(401, "Invalid refresh token");
     }
 
     if (incomingRefreshToken !== user?.refreshToken) {
@@ -327,7 +327,7 @@ const getAllBudgets = asyncHandler(async (req, res, next) => {
 const getRecentExpenses = asyncHandler(async (req, res, next) => {
   const data = await User.aggregate([
     {
-      $match: { _id: new mongoose.Types.ObjectId(req.user._id) }, // Match the user by ID
+      $match: { _id: req.user._id }, // Match the user by ID
     },
     {
       $lookup: {

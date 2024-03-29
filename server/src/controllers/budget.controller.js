@@ -1,4 +1,5 @@
 import { Budget } from "../models/budget.model.js";
+import { Expense } from "../models/expense.model.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -52,7 +53,7 @@ const addBudget = asyncHandler(async (req, res, next) => {
 });
 
 const removeBudget = asyncHandler(async (req, res, next) => {
-  const budgetId  = req.params.id;
+  const budgetId = req.params.id;
   const budget = await Budget.findById(budgetId);
   if (!budget) {
     throw new ApiError(404, "Budget not found");
@@ -74,14 +75,14 @@ const removeBudget = asyncHandler(async (req, res, next) => {
 });
 
 const editBudget = asyncHandler(async (req, res, next) => {
-  const { _id: budgetId, newBudgetAmount,spentAmount } = req.body;
+  const { _id: budgetId, newBudgetAmount, spentAmount } = req.body;
 
   const updatedBudget = await Budget.findByIdAndUpdate(
     budgetId,
     {
       $set: {
         budgetAmount: newBudgetAmount,
-        remainingAmount: newBudgetAmount-spentAmount
+        remainingAmount: newBudgetAmount - spentAmount,
       },
     },
     {
@@ -95,4 +96,38 @@ const editBudget = asyncHandler(async (req, res, next) => {
     );
 });
 
-export { addBudget, removeBudget, editBudget };
+const getBudgetInfo = asyncHandler(async (req, res, next) => {
+  const budgetId = req.params.id;
+
+  const budget = await Budget.findById(budgetId);
+  if (!budget) {
+    throw new ApiError(404, "Budget not found");
+  }
+
+  return res.status(200).json(new ApiResponse(200, budget, ""));
+});
+
+const getBudgetExpenditureInfo = asyncHandler(async (req, res, next) => {
+  const budgetId = req.params.id;
+  const expenditures = await Expense.aggregate([
+    {
+      $match: { categoryId: budgetId },
+    },
+  ]);
+
+  if (!expenditures) {
+    throw new ApiError(404, "Haven't spent a penny");
+  }
+
+  console.log("Expenditures: ", expenditures);
+
+  return res.status(200).json(new ApiResponse(200, expenditures, ""));
+});
+
+export {
+  addBudget,
+  removeBudget,
+  editBudget,
+  getBudgetInfo,
+  getBudgetExpenditureInfo,
+};

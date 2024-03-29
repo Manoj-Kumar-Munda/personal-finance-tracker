@@ -6,6 +6,10 @@ const expensesSchema = Schema(
       type: String,
       required: true,
     },
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Budget"
+    },
     paidAmount: {
       type: Number,
       default: 0,
