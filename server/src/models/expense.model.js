@@ -33,4 +33,4 @@ const expensesSchema = Schema(
   }
 );
 
-export const Expense = mongoose.model("expense", expensesSchema);
+export const Expense = mongoose.model("Expense", expensesSchema);

@@ -35,7 +35,7 @@ const userSchema = mongoose.Schema(
     recentExpenses: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Transaction",
+        ref: "Expense",
       },
     ],
     createdBudgets: [

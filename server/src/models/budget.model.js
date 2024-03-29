@@ -25,6 +25,12 @@ const budgetSchema = Schema(
       type: Date,
       require: true,
     },
+    spendingsHistory: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Expense",
+      },
+    ],
   },
   {
     timestamps: true,
