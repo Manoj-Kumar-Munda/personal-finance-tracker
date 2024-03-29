@@ -24,7 +24,6 @@ const RemoveBudget = () => {
 
   const deleteBudgetHandler = async (e) => {
     setIsLoading(true);
-    console.log("active: ", activeCategory);
     e.preventDefault();
     try {
       const res = await axiosConfig.delete(

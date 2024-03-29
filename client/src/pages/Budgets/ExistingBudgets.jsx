@@ -8,7 +8,6 @@ const ExistingBudgets = () => {
   const budgets = useSelector((store) => store.budget.currentBudgets);
   const [isShowAll, setIsShowAll] = useState(false);
   const [isMakeChanges, setIsmakeChanges] = useState(false);
-  console.log("Existing budgets: ", budgets);
 
   return (
     <>
@@ -24,6 +23,7 @@ const ExistingBudgets = () => {
             budgets.map((budget) => (
               <DoughnutChart
                 key={budget._id}
+                id={budget._id}
                 chartLabel={budget.category}
                 datasetLabel={"Budget analysis"}
                 dataArr={[budget.spentAmount, budget.remainingAmount]}
@@ -35,6 +35,7 @@ const ExistingBudgets = () => {
               .map((budget) => (
                 <DoughnutChart
                   key={budget._id}
+                  id={budget._id}
                   chartLabel={budget.category}
                   datasetLabel={"Budget analysis"}
                   dataArr={[budget.spentAmount, budget.remainingAmount]}
@@ -48,7 +49,7 @@ const ExistingBudgets = () => {
               className="font-Poppins"
               onClick={() => setIsShowAll((prev) => !prev)}
             >
-              {isShowAll ? "Show Less" : "Show More"}
+              { isShowAll ? "Show Less" : "Show More" }
             </Button>
           )}
 
