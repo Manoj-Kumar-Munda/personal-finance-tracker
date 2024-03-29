@@ -19,8 +19,10 @@ const AddBudgetForm = () => {
         budgetData
       );
       e.target.reset();
+
       dispatch(addNewBudget(res?.data?.data));
     } catch (error) {
+
       if (error?.response) {
         setError(error?.response.data.message);
       } else {
@@ -37,7 +39,7 @@ const AddBudgetForm = () => {
     resolver: yupResolver(budgetFormValidation),
   });
   return (
-    <>
+    <div className="flex-grow basis-auto min-w-96">
       <h1 className="text-5xl font-Maven-Pro font-bold text-slate-800 ">
         Add <span className="text-primary">Budget</span>
       </h1>
@@ -71,7 +73,7 @@ const AddBudgetForm = () => {
           </Button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
