@@ -8,6 +8,8 @@ import ExpensesPage from "./pages/ExpensesPage";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard";
+import BudgetInfo from "./pages/Budgets/BudgetDetails/BudgetInfo";
+import BudgetLayout from "./Layouts/BudgetLayout";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "/login",
@@ -32,12 +34,21 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/dashboard",
-            element: <Dashboard />
-
+            element: <Dashboard />,
           },
           {
             path: "/budgets",
-            element: <Budgets />,
+            element: <BudgetLayout />,
+            children: [
+              {
+                path: ":budgetId",
+                element: <BudgetInfo />,
+              },
+              {
+                path: "",
+                element: <Budgets />,
+              },
+            ],
           },
           {
             path: "/expenses",

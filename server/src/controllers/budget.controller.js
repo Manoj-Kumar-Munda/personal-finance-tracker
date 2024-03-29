@@ -109,19 +109,19 @@ const getBudgetInfo = asyncHandler(async (req, res, next) => {
 
 const getBudgetExpenditureInfo = asyncHandler(async (req, res, next) => {
   const budgetId = req.params.id;
-  const expenditures = await Expense.aggregate([
-    {
-      $match: { categoryId: budgetId },
-    },
-  ]);
+  const budget = await Budget.findById(budgetId);
 
-  if (!expenditures) {
+  const spendings = await Expense.find({
+    _id: {
+      $in: budget.spendingsHistory,
+    },
+  });
+
+  if (!spendings) {
     throw new ApiError(404, "Haven't spent a penny");
   }
 
-  console.log("Expenditures: ", expenditures);
-
-  return res.status(200).json(new ApiResponse(200, expenditures, ""));
+  return res.status(200).json(new ApiResponse(200, spendings, ""));
 });
 
 export {

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const DoughnutChart = ({
   id,
   chartLabel,
-  labelsArr = ["Spent amount", "remainingAmount"],
+  labelsArr = ["Spent", "remaining"],
   datasetLabel,
   datasetBgColorsArr = ["rgb(0,0,255)", "rgb(102,102,255)"],
   dataArr,

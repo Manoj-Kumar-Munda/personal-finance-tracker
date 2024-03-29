@@ -25,7 +25,7 @@ const ExistingBudgets = () => {
                 key={budget._id}
                 id={budget._id}
                 chartLabel={budget.category}
-                datasetLabel={"Budget analysis"}
+                datasetLabel={"amount"}
                 dataArr={[budget.spentAmount, budget.remainingAmount]}
               />
             ))
