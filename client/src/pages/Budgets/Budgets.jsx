@@ -9,7 +9,7 @@ const Budgets = () => {
 
   return (
     <div className="px-2 sm:px-4 my-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap gap-3">
         <AddBudgetForm />
         <AddExpenseForm />
       </div>
