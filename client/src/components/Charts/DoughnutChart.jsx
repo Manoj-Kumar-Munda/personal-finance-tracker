@@ -11,6 +11,7 @@ const DoughnutChart = ({
   datasetLabel,
   datasetBgColorsArr = ["rgb(0,0,255)", "rgb(102,102,255)"],
   dataArr,
+  showDetail = false,
 }) => {
   const data = getDoughnutData({
     labelsArr,
@@ -19,13 +20,17 @@ const DoughnutChart = ({
     dataArr,
   });
 
-
   return (
     <div>
       <div className="text-center">
         <Doughnut data={data} />
         <h2 className="text-center font-Poppins">{chartLabel}</h2>
-        <Button className=""><Link to={`/budgets/${id}`}>View Details</Link></Button>
+        {
+          showDetail &&
+          <Button className="">
+            <Link to={`/budgets/${id}`}>View Details</Link>
+          </Button>
+        }
       </div>
     </div>
   );
