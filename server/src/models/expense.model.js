@@ -23,10 +23,6 @@ const expensesSchema = Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    date: {
-      type: Date,
-      required: true,
-    },
   },
   {
     timestamps: true,

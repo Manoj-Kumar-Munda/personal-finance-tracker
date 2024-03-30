@@ -21,10 +21,6 @@ const budgetSchema = Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    date: {
-      type: Date,
-      require: true,
-    },
     spendingsHistory: [
       {
         type: Schema.Types.ObjectId,
