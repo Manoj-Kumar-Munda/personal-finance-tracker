@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../components/form/Input";
 import Button from "../../components/form/Button";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,7 @@ import { addNewBudget } from "../../utils/slices/budgetSlice";
 
 const AddBudgetForm = () => {
   const dispatch = useDispatch();
+  const [error, setError] = useState(null);
   const onSubmitHandler = async (budgetData, e) => {
 
     try {
@@ -71,6 +72,7 @@ const AddBudgetForm = () => {
           <Button className="transition-colors hover:bg-primary/80">
             Add Budget
           </Button>
+          { error && <ErrorMessge>{error}</ErrorMessge>}
         </form>
       </div>
     </div>

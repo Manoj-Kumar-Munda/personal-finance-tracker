@@ -22,6 +22,10 @@ const RemoveBudget = () => {
     setProgressPercentage(percent);
   }, [activeCategory]);
 
+  useEffect(() => {
+    setActiveCategory(categories[0]);
+  }, [categories]);
+
   const deleteBudgetHandler = async (e) => {
     setIsLoading(true);
     e.preventDefault();
@@ -29,10 +33,7 @@ const RemoveBudget = () => {
       const res = await axiosConfig.delete(
         `/api/v1/budget/${activeCategory._id}`
       );
-
-      console.log("repsonse", res.data.data)
-      dispatch(removeBudget(res.data.data))
-
+      dispatch(removeBudget(res.data.data));
       setIsLoading(false);
       setError(null);
     } catch (error) {

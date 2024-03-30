@@ -89,5 +89,5 @@ export const emailValidation = yup.object().shape({
 
 export const budgetFormValidation = yup.object().shape({
   category: yup.string().required("Enter budget category"),
-  budgetAmount: yup.number("Budget amount should be a number").required("Enter budget amount") 
+  budgetAmount: yup.number("Budget amount must be a number").required("Enter budget amount") 
 })

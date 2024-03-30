@@ -54,6 +54,7 @@ const addBudget = asyncHandler(async (req, res, next) => {
 
 const removeBudget = asyncHandler(async (req, res, next) => {
   const budgetId = req.params.id;
+  console.log("budgetId: ", budgetId)
   const budget = await Budget.findById(budgetId);
   if (!budget) {
     throw new ApiError(404, "Budget not found");
