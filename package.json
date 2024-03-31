@@ -7,7 +7,7 @@
     "client": "npm run dev --prefix client",
     "build": "npm run build --prefix server",
     "server":"npm run server --prefix server",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
