@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "client": "npm run dev --prefix client",
-    "build": "npm install --prefix client && npm run build --prefix client && npm install -prefix server",
     "server":"npm run prod --prefix server",
+    "build": "npm install --prefix client && npm run build --prefix client && npm install -prefix server && npm run server",
     "clientinstall": "npm install --prefix client",
     "start": "npm run server"
   },

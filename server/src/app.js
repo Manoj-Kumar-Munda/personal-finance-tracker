@@ -13,11 +13,11 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static(path.join(process.cwd(), "/dist")));
+app.use(express.static(path.join(process.cwd(), "/public")));
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("*", (req, res) => res.sendFile(path.join(process.cwd(), "/dist/index.html")));
+
 
 import userRouter from "./routers/user.router.js";
 
@@ -29,6 +29,8 @@ app.use("/api/v1/expense", ExpenseRouter);
 
 import budgetRouter from "./routers/budget.router.js";
 app.use("/api/v1/budget", budgetRouter);
+
+app.get("*", (req, res) => res.sendFile(path.join(process.cwd(), "/public/index.html")));
 
 //error handler
 app.use((err, req, res, next) => {
