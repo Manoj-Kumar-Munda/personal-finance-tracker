@@ -13,9 +13,11 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static(path.join(process.cwd(),'/dist')))
+app.use(express.static(path.join(process.cwd(), "/dist")));
 app.use(cookieParser());
 app.use(express.json());
+
+app.get("*", (req, res) => res.sendFile(path.join(process.cwd(), "/dist/index.html")));
 
 import userRouter from "./routers/user.router.js";
 
