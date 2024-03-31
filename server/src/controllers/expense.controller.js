@@ -7,11 +7,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 
 const addExpenses = asyncHandler(async (req, res, next) => {
-  const { category, paidAmount, description } = req.body;
+  const { category, paidAmount } = req.body;
 
   const session = await mongoose.startSession();
-  console.log("Category: ", category);
-
   const date = new Date();
 
   if (!category) {
@@ -22,17 +20,17 @@ const addExpenses = asyncHandler(async (req, res, next) => {
     throw new ApiError(400, "Enter amount");
   }
 
-  let result;
+  let createdExpense;
+  let updatedBudget;
   session.startTransaction();
 
   try {
-    [result] = await Expense.create(
+    [createdExpense] = await Expense.create(
       [
         {
           category: category.category,
           categoryId: category._id,
           paidAmount,
-          description,
           date,
           user: req.user._id,
         },
@@ -40,11 +38,11 @@ const addExpenses = asyncHandler(async (req, res, next) => {
       { session }
     );
 
-    if (!result) {
+    if (!createdExpense) {
       throw new ApiError(400, "Failed to create expense");
     }
     const user = await User.findById(req.user._id);
-    user.recentExpenses.push(result);
+    user.recentExpenses.push(createdExpense);
     await user.save({ validateBeforeSave: false }, { session });
     const categoryBudget = await Budget.aggregate([
       {
@@ -72,24 +70,23 @@ const addExpenses = asyncHandler(async (req, res, next) => {
       throw new ApiError(400, "No budget created for this category");
     }
 
-    await Budget.findByIdAndUpdate(
+    updatedBudget = await Budget.findByIdAndUpdate(
       categoryBudget[0]._id,
       {
         $inc: { spentAmount: paidAmount, remainingAmount: -paidAmount },
         $push: {
-          spendingsHistory: result,
+          spendingsHistory: createdExpense,
         },
       },
       {
         new: true,
       },
       {
-        session
+        session,
       }
     );
     await session.commitTransaction();
   } catch (error) {
-    console.log("Session: ", error);
     await session.abortTransaction();
     throw new ApiError(400, error.message || "Failed to add expense");
   } finally {
@@ -97,7 +94,13 @@ const addExpenses = asyncHandler(async (req, res, next) => {
   }
   return res
     .status(200)
-    .json(new ApiResponse(201, result, "Expense created successfully"));
+    .json(
+      new ApiResponse(
+        201,
+        { createdExpense, updatedBudget },
+        "Expense created"
+      )
+    );
 });
 
 export { addExpenses };

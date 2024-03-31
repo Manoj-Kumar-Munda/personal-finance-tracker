@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import SelectCategory from "../../components/form/Select";
 import Button from "../../components/form/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Heading from "../../components/ui/Heading";
 import Input from "../../components/form/Input";
 import { axiosConfig } from "../../utils/axios/axiosConfig";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { budgetFormValidation } from "../../utils/validationSchema";
+import ErrorMessge from "../../components/form/ErrorMessge";
+import toast, { Toaster } from "react-hot-toast";
+import { updateBudget } from "../../utils/slices/budgetSlice";
 
 const AddExpenseForm = () => {
   const categories = useSelector((store) => store.budget.currentBudgets);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -22,17 +26,26 @@ const AddExpenseForm = () => {
     resolver: yupResolver(budgetFormValidation),
   });
 
-  const addExpenseHandler = async (data) => {
+  const addExpenseHandler = async (data, e) => {
+    setIsLoading(true);
     const body = {
       category: JSON.parse(data.category),
-      paidAmount: data.budgetAmount
-    }
+      paidAmount: data.budgetAmount,
+    };
     try {
       const res = await axiosConfig.post("/api/v1/expense/add", body);
 
-      console.log("Response: ", res.data.data);
+      const { updatedBudget } = res.data.data;
+      console.log("updatedBudget ", updatedBudget);
+
+      toast.success("Expense added");
+      setIsLoading(false);
+      dispatch(updateBudget(updatedBudget));
+      e.target.reset();
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      toast.error(error?.response?.data.message);
     }
   };
 
@@ -41,6 +54,7 @@ const AddExpenseForm = () => {
   }
   return (
     <div className="flex-grow basis-auto min-w-96">
+      <Toaster />
       <Heading
         className="font-bold text-slate-800"
         font="font-Maven-Pro"
@@ -60,6 +74,10 @@ const AddExpenseForm = () => {
               name="budgetAmount"
               {...register("budgetAmount")}
             />
+
+            {errors.budgetAmount && (
+              <ErrorMessge>{errors.budgetAmount.message}</ErrorMessge>
+            )}
             <Button
               className="transition-all bg-teal-500 hover:bg-teal-400"
               disabled={isLoading}
