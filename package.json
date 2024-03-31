@@ -7,6 +7,7 @@
     "client": "npm run dev --prefix client",
     "build": "npm run build --prefix server",
     "server":"npm run server --prefix server",
+    "clientinstall": "npm install --prefix client",
     "start": "npm run server"
   },
   "keywords": [],

@@ -13,7 +13,7 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static(path.join(__dirname,'../dist')))
+app.use(express.static(path.join(process.cwd(),'/dist')))
 app.use(cookieParser());
 app.use(express.json());
 
