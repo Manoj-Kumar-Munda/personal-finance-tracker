@@ -6,7 +6,7 @@ const AboutUs = () => {
   return (
     <section className=" max-w-screen-xl w-full mx-auto my-4">
       <div className="space-y-4">
-        <div>
+        <div className=" px-2 sm:px-4">
           <Heading className="text-primary text-center text-5xl ">
             About Us
           </Heading>

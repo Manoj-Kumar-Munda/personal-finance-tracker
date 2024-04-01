@@ -7,8 +7,8 @@ const FeatureItem = ({
   title = "",
 }) => {
   return (
-    <div className="flex items-center justify-center gap-4">
-      <h1 className=" basis-28 lg:basis-32 self-start font-extrabold text-center outlined-number text-8xl lg:text-9xl">
+    <div className="flex items-center justify-center gap-4 px-2 overflow-hidden">
+      <h1 className=" basis-20 lg:basis-32 self-start font-extrabold text-center outlined-number text-8xl lg:text-9xl">
         {number}
       </h1>
       <div className="space-y-4 basis-full">

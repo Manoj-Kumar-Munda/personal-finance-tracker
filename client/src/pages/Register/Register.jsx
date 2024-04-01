@@ -35,7 +35,7 @@ const Register = () => {
   };
   return (
     <div className="lg:w-4/5 my-1 mx-auto bg-white flex items-center gap-x-4">
-      <div className="basis-full space-y-4">
+      <div className="basis-full space-y-4 px-2 sm:px-0">
         <h1 className="font-Poppins text-3xl font-bold text-slate-700">
           Register.
         </h1>

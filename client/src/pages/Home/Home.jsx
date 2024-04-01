@@ -9,12 +9,12 @@ const Home = () => {
     <div className="relative">
       <Hero />
 
-      <section className="my-4 md:my-8 bg-[#190482] py-6">
+      <section className="my-4 md:my-8 bg-violet-800 py-6">
         <Heading className="text-center text-white py-4 text-5xl">
           Features
         </Heading>
 
-        <div className="my-6 px-4 max-w-screen-xl w-full mx-auto space-y-4">
+        <div className="my-6 sm:px-4 max-w-screen-xl w-full mx-auto space-y-4">
           <FeatureItem number="1" title="Plan your budgets">
             Craft personalized budget plans tailored to your lifestyle and
             financial goals. With FinanceTrack, you can easily allocate funds to

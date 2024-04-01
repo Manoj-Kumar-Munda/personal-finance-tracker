@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../form/Button";
 import useLogout from "../../hooks/useLogout";
 import { logout } from "../../utils/slices/authSlice";
 import Logo from "./Logo";
-
+import { FaAngleDown } from "react-icons/fa";
+import HamburgurMenu from "./HamburgurMenu";
 
 const Header = () => {
   const { userInfo } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleLogout = async () => {
     try {
-      const res = await useLogout();
+      await useLogout();
       dispatch(logout());
     } catch (error) {
       dispatch(logout());
@@ -21,23 +23,38 @@ const Header = () => {
   };
   return (
     <header className="shadow-md">
-      <nav className="px-2 lg:w-4/5 mx-auto flex justify-between items-center py-4">
+      <nav className=" px-2 w-full max-w-screen-xl mx-auto flex justify-between items-center py-4">
         <Logo />
 
-        <ul className="flex gap-4 items-center">
+        <ul className="hidden sm:flex gap-4 items-center">
           <li>
-            <NavLink 
+            <NavLink
               to={"/dashboard"}
-              className={({ isActive }) => `font-semibold text-gray-700 transition-colors ${isActive && "text-indigo-500"}`}
+              className={({ isActive }) =>
+                `font-semibold text-gray-700 transition-colors ${
+                  isActive && "text-indigo-500"
+                }`
+              }
             >
-              
-                Dashboard
-            
+              Dashboard
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to={"/budgets"}
+              className={({ isActive }) =>
+                `font-semibold text-gray-700 transition-colors ${
+                  isActive && "text-indigo-500"
+                }`
+              }
+            >
+              Budgets
             </NavLink>
           </li>
         </ul>
 
-        <ul className="flex gap-4 items-center">
+        <ul className="hidden sm:flex gap-4 items-center">
           {userInfo && (
             <li className="" title="Profile">
               <div className="rounded-full overflow-hidden">
@@ -62,9 +79,7 @@ const Header = () => {
               <NavLink
                 to={"/login"}
                 className={({ isActive }) =>
-                  `font-semibold bg-white  border-2 border-primary px-6 py-2 rounded-xl transition-all ${
-                    isActive && "text-white  bg-primary "
-                  }`
+                  `font-semibold  border-2 border-primary px-6 py-2 rounded-xl transition-all`
                 }
               >
                 Login
@@ -72,6 +87,19 @@ const Header = () => {
             </li>
           )}
         </ul>
+
+        <div className="flex sm:hidden items-center gap-2 relative">
+          <span className="font-Poppins">Menu</span>
+          <button onClick={() => setShowMenu(prev => !prev)}>
+            <FaAngleDown />
+          </button>
+
+          {
+            showMenu && <HamburgurMenu handleLogout={handleLogout} />
+          }
+
+         
+        </div>
       </nav>
     </header>
   );
