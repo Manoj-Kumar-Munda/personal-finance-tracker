@@ -9,7 +9,7 @@ export const useRegister = async (data) => {
   formData.append("avatar", data.avatar[0]);
 
   const response = await axios.post(
-    "http://localhost:4000/api/v1/users/register",
+    "/api/v1/users/register",
     formData,
     {
       headers: {
