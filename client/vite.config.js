@@ -12,7 +12,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:4000',
+        target: 'https://personal-finance-tracker-g0tb.onrender.com',
         changeOrigin: true,
       }
     }
