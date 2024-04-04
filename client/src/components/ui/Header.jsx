@@ -7,6 +7,7 @@ import { logout } from "../../utils/slices/authSlice";
 import Logo from "./Logo";
 import { FaAngleDown } from "react-icons/fa";
 import HamburgurMenu from "./HamburgurMenu";
+import { removeAllBudgets } from "../../utils/slices/budgetSlice";
 
 const Header = () => {
   const { userInfo } = useSelector((store) => store.auth);
@@ -19,6 +20,7 @@ const Header = () => {
       dispatch(logout());
     } catch (error) {
       dispatch(logout());
+      dispatch(removeAllBudgets())
     }
   };
   return (
