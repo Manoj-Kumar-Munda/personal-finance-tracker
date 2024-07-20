@@ -33,6 +33,10 @@ const generateAccessAndRefreshToken = async (userId) => {
 const registerUser = asyncHandler(async (req, res, next) => {
   const { fullName, username, email, password } = req.body;
 
+  console.log(username);
+
+  console.log(fullName);
+
   if (!username) {
     throw new ApiError(403, "Username is required");
   }
@@ -52,6 +56,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   }
 
   const avatarLocalPath = req.file.path;
+  console.log(avatarLocalPath);
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is required");
